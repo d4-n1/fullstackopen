@@ -11,7 +11,9 @@ sequenceDiagram
     user->>browser: Press the Save button
     deactivate user
 
+
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Note right of browser: content: "Hello world!"<br/>date: new Date()
     activate server
     server-->>browser: 302 Found (triggers a page reload)
     deactivate server
