@@ -1,17 +1,15 @@
-mermaid.initialize({
-theme: 'dark',
-});
+%%{init: {'theme':'dark'}}%%
 
 sequenceDiagram
-actor user
-participant browser
-participant server
+
+    actor user
+    participant browser
+    participant server
 
     activate user
     user->>browser: Write "Hello world!" in the input
     user->>browser: Press the Save button
     deactivate user
-
 
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
