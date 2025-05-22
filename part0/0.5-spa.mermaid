@@ -1,0 +1,28 @@
+%%{init: {'theme':'dark'}}%%
+
+sequenceDiagram
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: 200 OK (HTML document)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: 200 OK (CSS stylesheet)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: 200 OK (JS script)
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that calls the JSON
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+    activate server
+    server-->>browser: 200 OK [{"content": "First note", "date": "2025-05-21" }, ... ]
+    deactivate server
+
+    Note right of browser: The browser renders the notes
