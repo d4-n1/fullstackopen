@@ -1,1 +1,1 @@
-Time spent: 0.5 hours
+Time spent: 1 hour
