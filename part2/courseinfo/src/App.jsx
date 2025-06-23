@@ -12,27 +12,19 @@ const Part = (props) => (
   </p>
 )
 
-const Total = (props) => {
-  const total = props.total.reduce((acc, cur) => {
-    return acc + cur.exercises
-  }, 0)
-
-  console.log(total)
-
-  return <strong>Total of {total} exercises</strong>
-}
+const Total = (props) => <strong>Total of {props.total} exercises</strong>
 
 const Course = (props) => {
   return (
     <div>
       <Header course={props.course.name} />
       <Content course={props.course.parts} />
-      <Total total={props.course.parts}/>
+      <Total total={props.total}/>
     </div>
   )
 }
 
-const App = () => {
+const App = () => {  
   const course = {
     id: 1,
     name: 'Half Stack application development',
@@ -55,7 +47,11 @@ const App = () => {
     ]
   }
 
-  return <Course course={course} />
+  const total = course.parts.reduce((acc, cur) => {
+    return acc + cur.exercises
+  }, 0)
+
+  return <Course course={course} total={total} />
 }
 
 export default App
