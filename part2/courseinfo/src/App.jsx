@@ -12,13 +12,22 @@ const Part = (props) => (
   </p>
 )
 
-const Total = (props) => <p>Number of exercises {props.total}</p>
+const Total = (props) => {
+  const total = props.total.reduce((acc, cur) => {
+    return acc + cur.exercises
+  }, 0)
+
+  console.log(total)
+
+  return <strong>Total of {total} exercises</strong>
+}
 
 const Course = (props) => {
   return (
     <div>
       <Header course={props.course.name} />
       <Content course={props.course.parts} />
+      <Total total={props.course.parts}/>
     </div>
   )
 }
