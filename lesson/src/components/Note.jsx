@@ -1,5 +1,5 @@
-const Note = ({ id, content }) => {
-  return <li key={id}>{content}</li>
+const Note = ({ note }) => {
+  return <li>{note.content}</li>
 }
 
 export default Note
