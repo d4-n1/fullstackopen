@@ -12,8 +12,8 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personsNames = persons.map(person => person.name)
-    if(personsNames.includes(newName)) {
+    const duplicatedName = persons.some(person => person.name === newName)
+    if(duplicatedName) {
       alert(`${newName} is already added to phonebook`)
     } else {
     const newPerson = {
