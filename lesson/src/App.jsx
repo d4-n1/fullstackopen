@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Note from './components/Note'
+import noteService from './services/notes'
 
 
 const App = () => {
@@ -9,38 +9,77 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        setNotes(response.data)
+    noteService
+      .getAll()
+      .then(initialNotes => {
+        setNotes(initialNotes)
       })
   }, [])
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
     setNewNote(event.target.value)
   }
 
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
-      id: notes.length + 1,
       content: newNote,
       important: Math.random() < 0.5
     }
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+        setNewNote('')
+      })
   }
+
+  const toggleImportanceOf = id => {
+    // Encuentra la nota con el id dado
+    const note = notes.find(n => n.id === id)
+    // Crea una copia del objeto con la propiedad important invertida
+    const changedNote = { ...note, important: !note.important }
+    
+    // Hace put de la nueva nota
+    noteService
+    .update(id, changedNote)
+    .then(returnedNote => {
+      // La respuesta cambia notes al mismo objeto con la nota cambiada
+      setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    })
+    .catch(error => {
+      alert("Wow, there's an error here")
+      setNotes(notes.filter((n) => n.id !== id))
+    })
+  }
+
+  /*
+  De esta forma, toggleImportanceOf(3)
+    const url = `http://localhost:3001/notes/3`
+    const note = {id: 3, note:'...', important: true}
+    const changedNote = {id: 3, note: '...', important: false}
+    
+  La response de PUT es
+    setNotes(notes.map(note => note.id !== 3 
+    ? note 
+    : response.data ({id: 3, note: '...', important: false}) ))
+  */
 
   const notesToShow = showAll 
     ? notes 
     : notes.filter((note) => note.important)
+
   return (
     <div>
       <h1>Notes</h1>
       <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note}/>
+        {notesToShow.map((note, i) => 
+          <Note
+            key={i}
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          />
         )}
       </ul>
       <button onClick={() => {setShowAll(!showAll)}}>
