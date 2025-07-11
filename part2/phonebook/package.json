@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "json-server": "json-server -p 3001 database.json"
+    "json-server": "json-server -p 3001 database.json",
+    "phonebook": "json-server -p 3002 db.json"
   },
   "dependencies": {
     "axios": "^1.10.0",

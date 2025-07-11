@@ -7,7 +7,7 @@ const Person = (props) => {
 }
 
 const Persons = (props) => {
-  return props.persons.length > 0
+  return props.persons?.length > 0
     ? props.persons.map(person => {
       return <Person name={person.name} number={person.number} key={person.name}/>
     })
