@@ -35,35 +35,42 @@ const App = () => {
       .includes(searchName
       .toLowerCase()))
 
+  const resetForm = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
+  const updatePerson = () => {
+    if(confirm(`${newName} is already added to the Phonebook. Do you want to update the number?`)) {
+    const person = persons.find(person => person.name === newName)
+    const changedPerson = {...person, number: newNumber}
+      personsService
+      .updatePerson(person.id, changedPerson)
+      .then((returnedPerson) => {
+        setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+        resetForm()
+      })
+    }
+  }
+
+  const createPerson = () => {
+    const newPerson = {
+      name: newName,
+      number: newNumber
+      }
+      personsService
+        .createPerson(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          resetForm()
+      })
+  }
+      
   const addPerson = (event) => {
     event.preventDefault()
 
-    const duplicatedName = persons.some(person => person.name === newName)
-    if(duplicatedName) {
-      if(confirm(`${newName} is already added to the Phonebook. Do you want to update the number?`)) {
-        const person = persons.find(n => n.name === newName)
-        const changedPerson = {...person, number: newNumber}
-        personsService
-        .updatePerson(person.id, changedPerson)
-        .then(() => {
-          setPersons(persons.map(p => p.id !== person.id ? p : changedPerson))
-          setNewName('')
-          setNewNumber('')
-        })
-      }
-    } else {
-        const newPerson = {
-        name: newName,
-        number: newNumber
-        }
-        personsService
-          .createPerson(newPerson)
-          .then(returnedPerson => {
-            setPersons(persons.concat(returnedPerson))
-            setNewName('')
-            setNewNumber('')
-        })
-      }
+    const duplicatedPerson = persons.some(person => person.name === newName)
+    duplicatedPerson ? updatePerson() : createPerson()
   }
 
   const deletePerson = id => {
