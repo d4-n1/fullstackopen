@@ -57,12 +57,13 @@ const App = () => {
   }
 
   const deletePerson = id => {
-    if (confirm(`Do you want to delete?`)) {
     const deletedPerson = persons.find(n => n.id === id)
+
+    if (confirm(`Do you want to delete ${deletedPerson.name}?`)) {
     const newPersons = persons.filter(person => person !== deletedPerson)
 
     personsService
-    .deletePerson(id, deletedPerson)
+    .deletePerson(id)
     .then(() => setPersons(newPersons))
     }
   }
