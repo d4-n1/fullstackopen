@@ -37,23 +37,33 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+
     const duplicatedName = persons.some(person => person.name === newName)
     if(duplicatedName) {
-      alert(`${newName} is already added to phonebook`)
+      if(confirm(`${newName} is already added to the Phonebook. Do you want to update the number?`)) {
+        const person = persons.find(n => n.name === newName)
+        const changedPerson = {...person, number: newNumber}
+        personsService
+        .updatePerson(person.id, changedPerson)
+        .then(() => {
+          setPersons(persons.map(p => p.id !== person.id ? p : changedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
     } else {
-    const newPerson = {
-      name: newName,
-      number: newNumber
-    }
-    
-    personsService
-      .createPerson(newPerson)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
-    }
+        const newPerson = {
+        name: newName,
+        number: newNumber
+        }
+        personsService
+          .createPerson(newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.concat(returnedPerson))
+            setNewName('')
+            setNewNumber('')
+        })
+      }
   }
 
   const deletePerson = id => {
