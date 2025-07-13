@@ -69,8 +69,8 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const duplicatedPerson = persons.some(person => person.name === newName)
-    duplicatedPerson ? updatePerson() : createPerson()
+    const isPersonDuplicated = persons.some(person => person.name === newName)
+    isPersonDuplicated ? updatePerson() : createPerson()
   }
 
   const deletePerson = id => {
