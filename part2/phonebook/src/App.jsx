@@ -12,7 +12,7 @@ const App = () => {
 
   useEffect(() => {
     personsService
-    .getAll()
+    .getAllPersons()
     .then(initialPersons => setPersons(initialPersons))
   }, [])
 
@@ -47,12 +47,23 @@ const App = () => {
     }
     
     personsService
-      .create(newPerson)
+      .createPerson(newPerson)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
       })
+    }
+  }
+
+  const deletePerson = id => {
+    if (confirm(`Do you want to delete?`)) {
+    const deletedPerson = persons.find(n => n.id === id)
+    const newPersons = persons.filter(person => person !== deletedPerson)
+
+    personsService
+    .deletePerson(id, deletedPerson)
+    .then(() => setPersons(newPersons))
     }
   }
 
@@ -71,7 +82,10 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons}/>
+      <Persons
+        persons={filteredPersons}
+        onClick={deletePerson}
+      />
     </div>
   )
 }
