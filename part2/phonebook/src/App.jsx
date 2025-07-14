@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [toastMessage, setToastMessage] = useState(null)
+  const [toastType, setToastType] = useState(null)
 
   useEffect(() => {
     personsService
@@ -51,12 +52,22 @@ const App = () => {
       .then((returnedPerson) => {
         setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
         resetForm()
-        setErrorMessage(
-          `Updated ${returnedPerson.name}'s number`
-          )
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+        setToastType('success')
+        setToastMessage(`Updated ${returnedPerson.name}'s number`)
+        setTimeout(() => {
+          setToastMessage(null)
+          setToastType(null)
+        }, 5000)
+      })
+      .catch(error => {
+        setPersons(persons.filter(p => p.id !== person.id ))
+        resetForm()
+        setToastType('error')
+        setToastMessage(`${person.name} doesn't exist`)
+        setTimeout(() => {
+          setToastMessage(null)
+          setToastType(null)
+        }, 5000)
       })
     }
   }
@@ -71,11 +82,13 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           resetForm()
-          setErrorMessage(
+          setToastType('success')
+          setToastMessage(
           `Added ${returnedPerson.name} to the Phonebook`
           )
           setTimeout(() => {
-            setErrorMessage(null)
+            setToastType(null)
+            setToastMessage(null)
           }, 5000)
       })
   }
@@ -119,7 +132,7 @@ const App = () => {
         onClick={deletePerson}
       />
 
-      <Toast message={errorMessage}/>
+      <Toast message={toastMessage} type={toastType}/>
     </div>
   )
 }

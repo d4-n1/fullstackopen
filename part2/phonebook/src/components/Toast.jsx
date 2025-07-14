@@ -3,7 +3,8 @@ const Toast = (props) => {
     return null
   }
 
-  return <div className="toast">{props.message}</div>
+  // return <div className="toast {props.type}">{props.message}</div>
+  return <div className={`toast toast-${props.type}`}>{props.message}</div>
 }
 
 export default Toast
