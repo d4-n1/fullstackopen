@@ -1,0 +1,10 @@
+.toast {
+  max-width: 256px;
+  background-color: green;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Toast from './components/Toast'
 import personsService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -49,6 +51,12 @@ const App = () => {
       .then((returnedPerson) => {
         setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
         resetForm()
+        setErrorMessage(
+          `Updated ${returnedPerson.name}'s number`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
       })
     }
   }
@@ -63,6 +71,12 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           resetForm()
+          setErrorMessage(
+          `Added ${returnedPerson.name} to the Phonebook`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
       })
   }
       
@@ -104,6 +118,8 @@ const App = () => {
         persons={filteredPersons}
         onClick={deletePerson}
       />
+
+      <Toast message={errorMessage}/>
     </div>
   )
 }
