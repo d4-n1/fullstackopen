@@ -1,4 +1,6 @@
-const CountryDetail = ({ country }) => {
+import WeatherDisplay from './WeatherDisplay';
+
+const CountryDetail = ({ country, weather }) => {
   const renderLanguages = () => {
     return Object.values(country.languages).map((lang, i) => (
       <li key={i}>{lang}</li>
@@ -21,6 +23,8 @@ const CountryDetail = ({ country }) => {
         alt={country.flags.alt}
         style={{ width: 120 }}
       ></img>
+
+      <WeatherDisplay weather={weather} />
     </div>
   );
 };
