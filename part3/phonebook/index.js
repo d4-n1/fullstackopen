@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const phonebook = [
+const persons = [
   {
     id: 1,
     name: 'Arto Hellas',
@@ -24,8 +24,16 @@ const phonebook = [
   },
 ];
 
-app.get('/api/phonebook', (req, res) => {
-  res.json(phonebook);
+app.get('/api/persons', (req, res) => {
+  res.json(persons);
+});
+
+app.get('/api/info', (req, res) => {
+  const info = `
+  <p>Phonebook has info for ${persons.length} people</p>
+  <p>${Date()}</p>
+  `;
+  res.send(info);
 });
 
 const PORT = 3001;
