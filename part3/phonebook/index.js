@@ -1,7 +1,26 @@
 const express = require('express');
 const app = express();
 
+const morgan = require('morgan');
+app.use(
+  morgan('tiny', {
+    skip: function (req, res) {
+      return req.path.includes('/.well-known');
+    },
+  })
+);
+
 app.use(express.json());
+
+// const requestLogger = (request, response, next) => {
+//   console.log('Method:', request.method);
+//   console.log('Path:  ', request.path);
+//   console.log('Body:  ', request.body);
+//   console.log('---');
+//   next();
+// };
+
+// app.use(requestLogger);
 
 let persons = [
   {
@@ -85,6 +104,13 @@ app.post('/api/persons', (req, res) => {
   persons = persons.concat(person);
   res.json(person);
 });
+
+// Si no coincide con ningún endpoint este se encarga de mostrar un error
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
