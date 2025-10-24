@@ -1,13 +1,20 @@
 const express = require('express');
 const app = express();
-
 const morgan = require('morgan');
+
+morgan.token('body', function (req, res) {
+  return JSON.stringify(req.body);
+});
+
 app.use(
-  morgan('tiny', {
-    skip: function (req, res) {
-      return req.path.includes('/.well-known');
-    },
-  })
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :body',
+    {
+      skip: function (req, res) {
+        return req.path.includes('/.well-known');
+      },
+    }
+  )
 );
 
 app.use(express.json());
