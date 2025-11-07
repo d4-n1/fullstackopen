@@ -1,5 +1,9 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
+app.use(express.json());
+app.use(cors());
 const morgan = require('morgan');
 
 morgan.token('body', function (req, res) {
@@ -16,18 +20,6 @@ app.use(
     }
   )
 );
-
-app.use(express.json());
-
-// const requestLogger = (request, response, next) => {
-//   console.log('Method:', request.method);
-//   console.log('Path:  ', request.path);
-//   console.log('Body:  ', request.body);
-//   console.log('---');
-//   next();
-// };
-
-// app.use(requestLogger);
 
 let persons = [
   {
@@ -55,6 +47,10 @@ let persons = [
 const generateId = () => {
   return Math.floor(Math.random() * 10 ** 10);
 };
+
+app.get('/', (request, res) => {
+  res.send('<h1>Hello there!</h1>');
+});
 
 app.get('/api/persons', (req, res) => {
   res.json(persons);
