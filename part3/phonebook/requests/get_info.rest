@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/info
+GET https://phonebook-ilqr.onrender.com/api/info
